@@ -1,22 +1,13 @@
 "use client";
 import React from "react";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import useUser from "@/app/hook/useUser";
-import Image from "next/image";
+
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedPaths } from "@/lib/constant";
-
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Profile() {
 	const { isFetching, data } = useUser();
@@ -26,7 +17,7 @@ export default function Profile() {
 	const pathname = usePathname();
 
 	if (isFetching) {
-		return <></>;
+		return <CircularProgress color="inherit" />;
 	}
 
 	const handleLogout = async () => {
@@ -41,7 +32,6 @@ export default function Profile() {
 
 	return (
 		<div>
-			{/* {JSON.stringify(data)} */}
 			{data ? (
 				<div className="flex items-center gap-4">
 					<span className=" hidden md:block">{data?.email}</span>
