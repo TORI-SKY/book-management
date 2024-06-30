@@ -7,7 +7,8 @@ import QueryProvider from "@/components/query-provider";
 import Navbar from "@/components/Navbar";
 import ToastMessage from '@/components/common/ToastMessage'
 import { Providers } from '@/components/common/Providers'
-
+import defautTheme from '@/lib/context/themes'
+import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,19 +29,23 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<AppRouterCacheProvider>
 					<QueryProvider>
-						<ThemeProvider
-							attribute="class"
-							enableSystem
-							disableTransitionOnChange
-						>
-							<Providers>
-								<ToastMessage />
-								<main className="max-w-6xl min-h-screen mx-auto py-10 space-y-10 px-5 xl:px-0">
-									<Navbar />
-									{children}
-								</main>
-							</Providers>
-						</ThemeProvider>
+						{/* mui theme provider */}
+						<MUIThemeProvider theme={defautTheme}>
+							{/* Shadcn theme provider */}
+							<ThemeProvider
+								attribute="class"
+								enableSystem
+								disableTransitionOnChange
+							>
+								<Providers>
+									<ToastMessage />
+									<main className="max-w-6xl min-h-screen mx-auto py-10 space-y-10 px-5 xl:px-0">
+										<Navbar />
+										{children}
+									</main>
+								</Providers>
+							</ThemeProvider>
+						</ MUIThemeProvider>
 					</QueryProvider>
 				</AppRouterCacheProvider>
 

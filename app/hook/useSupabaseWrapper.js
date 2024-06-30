@@ -22,7 +22,6 @@ export function useSupabaseWrapper() {
   ) {
     try {
       const { data, error } = await supabaseFunc()
-      console.log(data)
       if (error) {
         updateToastMessage(error.message, 'Something went wrong!', 'error')
 

@@ -63,9 +63,9 @@ export default function Page() {
       id: 'grade',
       label: 'Grade',
     },
-		{
-      id: 'author',
-      label: 'Author',
+    {
+      id: 'ISBN',
+      label: 'ISBN',
     },
 		{
       id: 'publisher',
@@ -84,7 +84,6 @@ export default function Page() {
         .from('books')
         .select("*"),
       )
-      console.log(data)
       setBooks(data || [])
     }
     fetchData()
@@ -92,7 +91,7 @@ export default function Page() {
 	return (
 		<div>
 			<Stack direction="row" spacing={2} justifyContent="space-between">
-        <div className="text-primary font-bold text-2xl">Books</div>
+        <div className="font-bold text-2xl">Books</div>
         <AddDialog books={books} setBooks={setBooks}/>
       </Stack>
 			<Paper>
@@ -111,7 +110,7 @@ export default function Page() {
                     .sort(getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
-                      <TableRow key={row.id}>
+                      <TableRow key={"bookpage" + row.id}>
                         {/* <TableCell component="th" scope="row">
                           {row.cover}
                         </TableCell> */}
@@ -121,8 +120,8 @@ export default function Page() {
 												<TableCell component="th" scope="row">
                           {row.grade}
                         </TableCell>
-												<TableCell component="th" scope="row">
-                          {row.author}
+                        <TableCell component="th" scope="row">
+                          {row.ISBN}
                         </TableCell>
 												<TableCell component="th" scope="row">
                           {row.publisher}

@@ -7,7 +7,6 @@ import { supabaseBrowser } from "@/lib/supabase/browser";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedPaths } from "@/lib/constant";
-import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Profile() {
 	const { isFetching, data } = useUser();
@@ -17,7 +16,7 @@ export default function Profile() {
 	const pathname = usePathname();
 
 	if (isFetching) {
-		return <CircularProgress color="inherit" />;
+		return <></>;
 	}
 
 	const handleLogout = async () => {

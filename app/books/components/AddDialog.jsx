@@ -21,7 +21,7 @@ export default function AddDialog({ books, setBooks }) {
 
   const [title, setTitle] = useState('')
   const [grade, setGrade] = useState('')
-  const [author, setAuthor] = useState('')
+  const [ISBN, setISBN] = useState('')
   const [publisher, setPublisher] = useState('')
 
   const [OpenDialog, setOpenDialog] = useState(false)
@@ -30,16 +30,18 @@ export default function AddDialog({ books, setBooks }) {
     setOpenDialog(false)
   }
 
-  const createBook = async () => {
+  const createBook = async (e) => {
+    e.preventDefault()
     const newBook = await supabaseActionWrapper(
       () => supabase
       .from('books')
       .insert([
-        { title, grade, author, publisher },
+        { title, grade, publisher, ISBN },
       ])
       .select()
     )
     setBooks([...books, newBook])
+    setOpenDialog(false)
   }
   return (
     <>
@@ -83,13 +85,13 @@ export default function AddDialog({ books, setBooks }) {
                 />
                 <TextField
                   autoFocus
-                  id="author"
-                  label="Book Author"
-                  type="author"
-                  value={author}
+                  id="ISBN"
+                  label="ISBN"
+                  type="ISBN"
+                  value={ISBN}
                   fullWidth
                   variant="outlined"
-                  onChange={(e) => setAuthor(e.target.value)}
+                  onChange={(e) => setISBN(e.target.value)}
                 />
                 <TextField
                   autoFocus

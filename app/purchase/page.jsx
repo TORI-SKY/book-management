@@ -1,25 +1,19 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-	TableContainer,
-	Paper,
-	Table,
-	TableBody,
-	TableRow,
-	TableCell,
-  TablePagination
-} from '@mui/material'
+import * as moment from 'moment'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TablePagination from '@mui/material/TablePagination'
+import TableRow from '@mui/material/TableRow'
 
 import TableHeadSortable, { getComparator } from '@/components/common/TableHeadSort'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+import AddDialog from './components/AddDialog'
+
 
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { useSupabaseWrapper } from '@/app/hook/useSupabaseWrapper'
@@ -27,13 +21,15 @@ import { useSupabaseWrapper } from '@/app/hook/useSupabaseWrapper'
 
 export default function Page() {
   const { supabaseActionWrapper } = useSupabaseWrapper()
-  const [books, setBooks] = React.useState([])
   const supabase = supabaseBrowser();
+
+  const [books, setBooks] = React.useState([])
 
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('title')
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(25)
+
 	const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -47,7 +43,7 @@ export default function Page() {
   const onDelete = async (id) => {
     await supabaseActionWrapper(
       () => supabase
-      .from('books')
+      .from('book_stocks')
       .delete()
       .eq('id', id),
       { showMessage: true }
@@ -56,25 +52,37 @@ export default function Page() {
   }
 
   const headCells = [
-		// {
-    //   id: 'cover',
-    //   label: 'Cover',
-    // },
+		{
+      id: 'school',
+      label: 'School',
+    },
     {
-      id: 'title',
-      label: 'Title',
+      id: 'books.title',
+      label: 'Book Title',
     },
 		{
-      id: 'grade',
+      id: 'books.grade',
       label: 'Grade',
     },
-		{
-      id: 'author',
-      label: 'Author',
+    {
+      id: 'books.ISBN',
+      label: 'ISBN',
     },
-		{
-      id: 'publisher',
-      label: 'Publisher',
+    {
+      id: 'quantity',
+      label: 'Quantity',
+    },
+    {
+      id: 'order_date',
+      label: 'Order Date',
+    },
+    {
+      id: 'delivered_date',
+      label: 'Delivery Date',
+    },
+    {
+      id: 'payment_date',
+      label: 'Payment Date',
     },
     {
       id: 'empty',
@@ -82,34 +90,40 @@ export default function Page() {
     },
   ]
 
+  const fetchData = async () => {
+    const data = await supabaseActionWrapper(
+     () => supabase
+     .from('purchase_order')
+     .select(`
+       id,
+       quantity,
+       order_date,
+       delivered_date,
+       payment_date,
+       school,
+       status,
+       books (
+         id,
+         title,
+         grade,
+         ISBN,
+         publisher
+       )
+     `),
+   )
+   setBooks(data || [])
+ }
   useEffect(() => {
-    const fetchData = async () => {
-       const data = await supabaseActionWrapper(
-        () => supabase
-        .from('books')
-        .select("*"),
-      )
-      console.log(data)
-      setBooks(data || [])
-    }
     fetchData()
   }, [])
 	return (
 		<div>
-			<div className=" flex justify-between">
-				<h1 className=" text-xl">Books</h1>
-				<Dialog>
-					<DialogTrigger>Add New Book</DialogTrigger>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Add New Book</DialogTitle>
-						</DialogHeader>
-						<div>
-							<p>form here</p>
-						</div>
-					</DialogContent>
-				</Dialog>
-			</div>
+			<Stack direction="row" spacing={2} justifyContent="space-between">
+        <div className="font-bold text-2xl">Purchase Order</div>
+        <div className="flex space-x-2">
+          <AddDialog books={books} setBooks={setBooks} />
+        </div>
+      </Stack>
 			<Paper>
           <TableContainer>
             <Table>
@@ -126,21 +140,30 @@ export default function Page() {
                     .sort(getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
-                      <TableRow key={row.id}>
-                        {/* <TableCell component="th" scope="row">
-                          {row.cover}
-                        </TableCell> */}
-												<TableCell component="th" scope="row">
-                          {row.title}
+                      <TableRow key={"purchasepage" + row.id}>
+                        <TableCell component="th" scope="row">
+                          {row.school}
                         </TableCell>
 												<TableCell component="th" scope="row">
-                          {row.grade}
+                          {row.books.title}
                         </TableCell>
 												<TableCell component="th" scope="row">
-                          {row.author}
+                          {row.books.grade}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {row.books.ISBN}
                         </TableCell>
 												<TableCell component="th" scope="row">
-                          {row.publisher}
+                          {row.quantity}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {row.order_date && moment(row.order_date).format('DD-MM-YYYY')}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {row.delivered_date && moment(row.delivered_date).format('DD-MM-YYYY')}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {row.payment_date && moment(row.payment_date).format('DD-MM-YYYY')}
                         </TableCell>
                         <TableCell scope="row" align="right">
                           <ConfirmDialog callback={() => onDelete(row.id)} />
