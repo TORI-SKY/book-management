@@ -35,7 +35,7 @@ export default function Profile() {
 				<div className="flex items-center gap-4">
 					<span className=" hidden md:block">{data?.email}</span>
 					<form action={handleLogout}>
-						<button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
+						<button className="py-2 px-4 text-white font-medium rounded-md no-underline bg-btn-background hover:bg-btn-background-hover bg-[#6C2C8D]">
 							Logout
 						</button>
 					</form>
@@ -43,7 +43,7 @@ export default function Profile() {
 			) : (
 				<Link
 					href="/auth"
-					className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+					className="py-2 px-3 text-white font-medium flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover bg-[#6C2C8D]"
 				>
 					Login
 				</Link>
