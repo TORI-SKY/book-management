@@ -43,7 +43,7 @@ export default function Page() {
   const onDelete = async (id) => {
     await supabaseActionWrapper(
       () => supabase
-      .from('book_stocks')
+      .from('purchase_order')
       .delete()
       .eq('id', id),
       { showMessage: true }
