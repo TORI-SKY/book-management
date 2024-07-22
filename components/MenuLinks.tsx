@@ -18,14 +18,14 @@ export default function MenuLinks() {
 		<div className="flex">
 			{/* {pathname} */}
 			<NavigationMenu>
-				<NavigationMenuList className=" flex space-x-2 ">
-					<NavigationMenuItem className={`${pathname === '/' ? ' bg-primary text-white' : ''}  p-2 rounded`}>
+				<NavigationMenuList className=" flex space-x-2 font-bold ">
+					<NavigationMenuItem className={`${pathname === '/' ? ' bg-primary text-white font-bold' : ''}  px-[1rem] py-[0.5rem] rounded`}>
 						<NavigationMenuLink href="/">Stocks</NavigationMenuLink>
 					</NavigationMenuItem>
-					<NavigationMenuItem className={`${pathname === '/books' ? ' bg-primary text-white' : ''}  p-2 rounded`}>
+					<NavigationMenuItem className={`${pathname === '/books' ? ' bg-primary text-white font-bold' : ''}  px-[1rem] py-[0.5rem] rounded`}>
 						<NavigationMenuLink href="/books">Books</NavigationMenuLink>
 					</NavigationMenuItem >
-					<NavigationMenuItem className={`${pathname === '/purchase' ? ' bg-primary text-white' : ''}  p-2 rounded`}>
+					<NavigationMenuItem className={`${pathname === '/purchase' ? ' bg-primary text-white font-bold' : ''}  px-[1rem] py-[0.5rem] rounded`}>
 						<NavigationMenuLink href="/purchase">Purchase</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>

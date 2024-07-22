@@ -17,6 +17,7 @@ import AddDialog from './components/AddDialog'
 
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { useSupabaseWrapper } from '@/app/hook/useSupabaseWrapper'
+import { ClassNames } from "@emotion/react";
 
 
 export default function Page() {
@@ -55,6 +56,8 @@ export default function Page() {
 		{
       id: 'school',
       label: 'School',
+      className:'font-bold',
+      
     },
     {
       id: 'books.title',
@@ -172,7 +175,7 @@ export default function Page() {
                     ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={headCells.length} align="center">
+                    <TableCell colSpan={headCells.length} align="center" >
                       No data to show
                     </TableCell>
                   </TableRow>
